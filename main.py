@@ -32,6 +32,16 @@ def add_points(p1, p2):
     y3 = s*(x1 - x3) - y1
     return [x3, y3]
 
+def legendre_symbol(a, p):
+    # euler criterion to compute legendre symbol 
+    e = (p - 1) // 2
+    if a % p == 0:
+        return 0
+    elif pow(a, e, p) == 1:
+        return 1
+    else:
+        return -1
+
 # Finding all points on an elliptical curve
 # mod function
 # p must be an odd prime so check for prime
@@ -42,8 +52,8 @@ def add_points(p1, p2):
 # Find where RHS % p == LHS % p 
 
 # %%
-generate_256_hex()
-
+priv_key = generate_256_hex()
+print(priv_key)
 # %%
 # Cryptography uses elliptic curves in a simplified form (Weierstrass form), which is defined as:
 # y^2 = x^3 + ax + b
