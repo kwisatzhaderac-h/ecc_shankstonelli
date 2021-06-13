@@ -1,4 +1,5 @@
 # %%
+import sys
 import random
 import matplotlib.pyplot as plt
 from matplotlib.pyplot import figure
@@ -42,26 +43,28 @@ def legendre_symbol(a, p):
     else:
         return -1
 
+# %% Shanks Tonelli
+def calculate(a, p):
+    # Step 1
+    if p <=2 or p % 2 == 0 :
+        sys.exit('p must be a prime greater than 2. Exiting...')
+    # Step 2
+    ls = legendre_symbol(a, p)
+    if ls != 1:
+        sys.exit(f'{a} has no square root (mod {p}). Exiting...')
+    # Step 3
+    e = 1
+    while ((p - 1) / (2**e)) % 2 == 0:
+        e += 1
+    s = ((p - 1) / (2**e))
+    # Step 4
+    n = 2
+    while legendre_symbol(n, p) != -1:
+        n += 1
+
 # %%
 ### Find a square root of 2 modulo the prime 113
-## Shanks Tonelli
-# Step 1
-a = 2
-p = 113
-if p <=2 or p % 2 == 0 :
-    print('p must be a prime greater than 2')
-
-# Step 2 and 3 - Compute Legendre Symbol
-ls = legendre_symbol(a, p)
-if ls != 1:
-        print(f'{a} has no square root (mod {p}). Exiting...')
-
-# Step 4
-n = 2
-while legendre_symbol(n, p) != -1:
-    n += 1
-
-# p - 1 = s*2**e
+calculate(2,113)
 
 # %%
 ### Generate private key
