@@ -61,6 +61,7 @@ def calculate(a, p):
     n = 2
     while legendre_symbol(n, p) != -1:
         n += 1
+    # Step 5 initisalise variables
 
 # %%
 ### Find a square root of 2 modulo the prime 113
