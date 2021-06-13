@@ -42,25 +42,38 @@ def legendre_symbol(a, p):
     else:
         return -1
 
-# Finding all points on an elliptical curve
-# mod function
-# p must be an odd prime so check for prime
-# x and y is in range 0 to p - 1, x, y = range(0, p)
-# Naive approach
-# Calculate all values of RHS for range x
-# Calculate all values of LHS for range y
-# Find where RHS % p == LHS % p 
+# %%
+### Find a square root of 2 modulo the prime 113
+## Shanks Tonelli
+# Step 1
+a = 2
+p = 113
+if p <=2 or p % 2 == 0 :
+    print('p must be a prime greater than 2')
+
+# Step 2 and 3 - Compute Legendre Symbol
+ls = legendre_symbol(a, p)
+if ls != 1:
+        print(f'{a} has no square root (mod {p}). Exiting...')
+
+# Step 4
+n = 2
+while legendre_symbol(n, p) != -1:
+    n += 1
+
+# p - 1 = s*2**e
 
 # %%
+### Generate private key
 priv_key = generate_256_hex()
 print(priv_key)
+
 # %%
+### Plotting elliptical curve over real numbers
 # Cryptography uses elliptic curves in a simplified form (Weierstrass form), which is defined as:
 # y^2 = x^3 + ax + b
 # Bitcoin uses the secp256k1 elliptic curve defined as:
 # y2 = x3 + 7 , where a = 0 and b = 7
-
-# The following plots the curve over real numbers
 
 y, x = np.ogrid[-6:6:50j, -6:6:50j]
 a = 0
@@ -72,13 +85,10 @@ plt.contour(x.ravel(), y.ravel(), pow(x, 3) + a*x + b - pow(y ,2), [0])
 plt.grid()
 plt.show()
 
-# pow(x, 3) + 7 - pow(y ,2)
-# y = sqrt()
-
 # %%
-# Resources
+## Resources
 # https://en.bitcoin.it/wiki/Secp256k1
 # https://cryptobook.nakov.com/asymmetric-key-ciphers/elliptic-curve-cryptography-ecc
 # https://www.cs.purdue.edu/homes/ssw/cs655/ec.pdf
 # https://asecuritysite.com/encryption/ecc_pointsv
-# Shanks - Tonelli Algorithm: https://www.maa.org/sites/default/files/pdf/upload_library/22/Polya/07468342.di020786.02p0470a.pdf
+# https://www.maa.org/sites/default/files/pdf/upload_library/22/Polya/07468342.di020786.02p0470a.pdf
