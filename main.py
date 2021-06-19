@@ -1,7 +1,6 @@
 # Steven Lam 
 # 2021
 # %%
-import sys
 import random
 import matplotlib.pyplot as plt
 from matplotlib.pyplot import figure
@@ -49,11 +48,13 @@ def legendre_symbol(a, p):
 def solve_QuadraticCongruence(a, p):
     # Step 1
     if p <= 2 or p % 2 == 0 :
-        sys.exit('p must be a prime greater than 2. Exiting...')
+        return 'None'
+        # sys.exit('p must be a prime greater than 2. Exiting...')
     # Step 2
     ls = legendre_symbol(a, p)
     if ls != 1:
-        sys.exit(f'{a} has no square root (mod {p}). Exiting...')
+        return 'None'
+        # sys.exit(f'{a} has no square root (mod {p}). Exiting...')
     # Step 3
     n = 1
     while ((p - 1) / (2 ** n)) % 2 == 0:
@@ -71,7 +72,7 @@ def solve_QuadraticCongruence(a, p):
         while pow(r, pow(2, i), p) != 1:
             i += 1
         if i == 0:
-            return f'{t}, {p - t} (mod {p}).'
+            return [t, p - t]
         else:
             u = pow(q, k * pow(2, n - i - 1), p)
             t = (t * u) % p
@@ -79,8 +80,23 @@ def solve_QuadraticCongruence(a, p):
 
 # %%
 ### Find a square root of 2 modulo the prime 113
-solve_QuadraticCongruence(5, 40961)
-# Prints: '19424, 21537 (mod 40961).'
+sol = solve_QuadraticCongruence(7, 17)
+# Prints: [19424, 21537]
+
+# %%
+### Finding points on the secp256k1 elliptic curve
+p = 17 # we are finding up to 17 points that lie on the curve 
+x_Points = []
+y_Points = []
+for x in range(18):
+    a =  x ** 3 + 7 
+    sol = solve_QuadraticCongruence(a, p) # output y for given x
+    if sol == 'None':
+        continue
+    x_Points.append(x)
+    y_Points.append(sol[0])
+    x_Points.append(x)
+    y_Points.append(sol[1])
 # %%
 ### Generate private key
 priv_key = generate_256_hex()
