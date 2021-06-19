@@ -44,29 +44,41 @@ def legendre_symbol(a, p):
         return -1
 
 # %% Shanks Tonelli
-def calculate(a, p):
+def solve_QuadraticCongruence(a, p):
     # Step 1
-    if p <=2 or p % 2 == 0 :
+    if p <= 2 or p % 2 == 0 :
         sys.exit('p must be a prime greater than 2. Exiting...')
     # Step 2
     ls = legendre_symbol(a, p)
     if ls != 1:
         sys.exit(f'{a} has no square root (mod {p}). Exiting...')
     # Step 3
-    e = 1
-    while ((p - 1) / (2**e)) % 2 == 0:
-        e += 1
-    s = ((p - 1) / (2**e))
-    # Step 4
-    n = 2
-    while legendre_symbol(n, p) != -1:
+    n = 1
+    while ((p - 1) / (2 ** n)) % 2 == 0:
         n += 1
-    # Step 5 initisalise variables
+    k = ((p - 1) // (2 ** n))
+    # Step 4
+    q = 2
+    while legendre_symbol(q, p) != -1:
+        q += 1
+    # Begin loop
+    t = pow(a, (k + 1) // 2, p)
+    r = pow(a, k, p)
+    while True:
+        i = 0
+        while pow(r, pow(2, i), p) != 1:
+            i += 1
+        if i == 0:
+            return f'{t}, {p - t} (mod {p}).'
+        else:
+            u = pow(q, k * pow(2, n - i - 1), p)
+            t = (t * u) % p
+            r = (r * u * u) % p
 
 # %%
 ### Find a square root of 2 modulo the prime 113
-calculate(2,113)
-
+solve_QuadraticCongruence(5, 40961)
+# Prints: '19424, 21537 (mod 40961).'
 # %%
 ### Generate private key
 priv_key = generate_256_hex()
