@@ -79,28 +79,24 @@ def solve_QuadraticCongruence(a, p):
             r = (r * u * u) % p
 
 # %%
-### Find a square root of 2 modulo the prime 113
-sol = solve_QuadraticCongruence(7, 17)
-# Prints: [19424, 21537]
-
-# %%
 ### Finding points on the secp256k1 elliptic curve
+def find_Points(p):
+    x_Points = []
+    y_Points = []
+    for x in range(p + 1):
+        a =  x ** 3 + 7 # y2 = x3 + 7
+        sol = solve_QuadraticCongruence(a, p) # output y for given x
+        if sol == 'None':
+            continue
+        x_Points.append(x), y_Points.append(sol[0])
+        x_Points.append(x), y_Points.append(sol[1])
+    return x_Points, y_Points
+
 p = 17 # we are finding up to 17 points that lie on the curve 
-x_Points = []
-y_Points = []
-for x in range(18):
-    a =  x ** 3 + 7 
-    sol = solve_QuadraticCongruence(a, p) # output y for given x
-    if sol == 'None':
-        continue
-    x_Points.append(x)
-    y_Points.append(sol[0])
-    x_Points.append(x)
-    y_Points.append(sol[1])
+find_Points(p)
 # %%
-### Generate private key
-priv_key = generate_256_hex()
-print(priv_key)
+### TODO: Plot elliptical curve over discrete points
+def plot_Points(x_Points, y_Points):
 
 # %%
 ### Plotting elliptical curve over real numbers
@@ -118,6 +114,11 @@ plt.figure(figsize=(12,9))
 plt.contour(x.ravel(), y.ravel(), pow(x, 3) + a*x + b - pow(y ,2), [0])
 plt.grid()
 plt.show()
+
+# %% Multiply private key to generage public key
+### Generate private key
+priv_key = generate_256_hex()
+print(priv_key)
 
 # %%
 ## Resources
