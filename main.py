@@ -99,7 +99,8 @@ def plot_Points(x_Points, y_Points):
     plt.show()
 
 # %% Running functions
-p = 23 # must be a prime number
+# TODO: Create prime checker
+p = 53 # must be a prime number
 x_Points, y_Points = find_Points(p)
 plot_Points(x_Points, y_Points)
 
