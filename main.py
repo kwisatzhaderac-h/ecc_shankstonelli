@@ -78,8 +78,7 @@ def solve_QuadraticCongruence(a, p):
             t = (t * u) % p
             r = (r * u * u) % p
 
-# %%
-### Finding points on the secp256k1 elliptic curve
+### Finding points on the secp256k1 curve
 def find_Points(p):
     x_Points = []
     y_Points = []
@@ -90,21 +89,22 @@ def find_Points(p):
             continue
         x_Points.append(x), y_Points.append(sol[0])
         x_Points.append(x), y_Points.append(sol[1])
-    return x_Points, y_Points
+    return x_Points, y_Points # Points in Galois Field
 
-p = 17 # we are finding up to 17 points that lie on the curve 
-find_Points(p)
-# %%
-### TODO: Plot elliptical curve over discrete points
+### Plot points on secp256k1 curve
 def plot_Points(x_Points, y_Points):
+    plt.figure(figsize=(12,9))
+    plt.plot(x_Points, y_Points, 'o', color='black')
+    plt.grid()
+    plt.show()
+
+# %% Running functions
+p = 23 # must be a prime number
+x_Points, y_Points = find_Points(p)
+plot_Points(x_Points, y_Points)
 
 # %%
 ### Plotting elliptical curve over real numbers
-# Cryptography uses elliptic curves in a simplified form (Weierstrass form), which is defined as:
-# y^2 = x^3 + ax + b
-# Bitcoin uses the secp256k1 elliptic curve defined as:
-# y2 = x3 + 7 , where a = 0 and b = 7
-
 y, x = np.ogrid[-6:6:50j, -6:6:50j]
 a = 0
 b = 7
