@@ -5,6 +5,7 @@ import random
 import matplotlib.pyplot as plt
 from matplotlib.pyplot import figure
 import numpy as np
+import sys
 
 # %%
 def generate_256_hex():
@@ -78,8 +79,17 @@ def solve_QuadraticCongruence(a, p):
             t = (t * u) % p
             r = (r * u * u) % p
 
+def is_Prime(p):
+    for num in range(2,p):
+        if p % num == 0:
+            sys.exit("p is not a prime")
+
 ### Finding points on the secp256k1 curve
 def find_Points(p):
+    if p > 2 :
+        is_Prime(p)
+    else:
+        sys.exit("p must be a prime and greater than 2")
     x_Points = []
     y_Points = []
     for x in range(p + 1):
@@ -99,8 +109,7 @@ def plot_Points(x_Points, y_Points):
     plt.show()
 
 # %% Running functions
-# TODO: Create prime checker
-p = 53 # must be a prime number
+p = 97 # must be a prime number
 x_Points, y_Points = find_Points(p)
 plot_Points(x_Points, y_Points)
 
