@@ -16,25 +16,29 @@ def generate_256_hex():
 
 # check a point is on an elliptic curve
 def on_curve(x, y):
-    # secp256k1; y^2 = x^3 + 7 , p = pow(2, 256) - pow(2, 32) - pow(2, 9) - pow(2, 8) - pow(2, 7) - pow(2, 6) - pow(2, 4) - 1 
-    if (pow(x, 3) + 7 - pow(y ,2))  == 0:
+    # secp256k1; y^2 = x^3 + 7
+    if (x ** 3 + 7 - y ** 2)  == 0:
         return True
     else:
         return False
 
-def add_points(p1, p2):
-    x1 = p1[0]
-    y1 = p1[1]
-    x2 = p2[0]
-    y2 = p2[1]
+# %%
+def add_points(p1, p2, p):
+    """
+    This is only for the elliptic curve y^2 = x^3 + 7
+    """
+    x1, y1 = p1[0], p1[1]
+    x2, y2 = p2[0], p2[1]
     if p1 != p2:
-        s = (y2 - y1) / (x2 - x1)
+        s = ((y2 - y1) % p) * pow(((x2 - x1) % p), -1, p)
     else: # calculate tangent slope
-        s = (3*x1**2) / (2*y1)
-    x3 = s**2 - x1 - x2
-    y3 = s*(x1 - x3) - y1
+        s = (3 * (x1 ** 2) % p) * pow((2 * y1) % p, -1, p)
+        print(s)
+    x3 = (s ** 2 - x1 - x2) % p
+    y3 = (s * (x1 - x3) - y1) % p
     return [x3, y3]
 
+ # %%
 def legendre_symbol(a, p):
     # euler criterion to compute legendre symbol 
     e = (p - 1) // 2
@@ -103,13 +107,18 @@ def find_Points(p):
 
 ### Plot points on secp256k1 curve
 def plot_Points(x_Points, y_Points):
-    plt.figure(figsize=(12,9))
+    fig = plt.figure(figsize=(12,12))
+    ax = fig.add_subplot(111)
     plt.plot(x_Points, y_Points, 'o', color='black')
-    plt.grid()
+    plt.grid(which='both', axis='both')
+    plt.xlim(0)
+    plt.ylim(0)
+    ax.xaxis.set_major_locator(plt.MultipleLocator(1))
+    ax.yaxis.set_major_locator(plt.MultipleLocator(1))
     plt.show()
 
 # %% Running functions
-p = 97 # must be a prime number
+p = 17 # must be a prime number
 x_Points, y_Points = find_Points(p)
 plot_Points(x_Points, y_Points)
 
