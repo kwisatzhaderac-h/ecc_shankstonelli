@@ -22,8 +22,8 @@ def on_curve(x, y):
     else:
         return False
 
-# %%
-def add_points(p1, p2, p):
+# %% 
+def add_Points(p1, p2, p):
     """
     This is only for the elliptic curve y^2 = x^3 + 7
     """
@@ -37,6 +37,13 @@ def add_points(p1, p2, p):
     x3 = (s ** 2 - x1 - x2) % p
     y3 = (s * (x1 - x3) - y1) % p
     return [x3, y3]
+
+# TODO: Generator Point multiplication function
+"""
+args: G, k
+where G = Generator point (constant) and k = int (private key)
+Function will calculate P = k * G
+"""
 
  # %%
 def legendre_symbol(a, p):
@@ -121,7 +128,6 @@ def plot_Points(x_Points, y_Points):
 p = 17 # must be a prime number
 x_Points, y_Points = find_Points(p)
 plot_Points(x_Points, y_Points)
-
 # %%
 ### Plotting elliptical curve over real numbers
 y, x = np.ogrid[-6:6:50j, -6:6:50j]
