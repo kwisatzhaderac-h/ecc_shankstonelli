@@ -25,22 +25,26 @@ def on_Curve(pt, p):
     else:
         return False
 
-# %% 
+# %% TODO: Addition to points on infinity
 def add_Points(p1, p2, p):
     """
     Point addition for curve secp256k1 y^2 = x^3 + 7 (mod p)
     """
     x1, y1 = p1
     x2, y2 = p2
-    if p1 != p2:
+    if p1 == [0, 0]:
+        return p2
+    elif p2 == [0, 0]:
+        return p1 
+    elif p1 != p2:
         num = (y2 - y1) % p
         den = (x2 - x1) % p
     else: # calculate tangent slope
         num = 3 * (x1 ** 2) % p
         den = (2 * y1) % p
-    # check for no solution
+    # check for point at infinity
     if den == 0:
-        return [None, None]
+        return [0, 0]
     s = num * pow(den, -1, p)
     x3 = (s ** 2 - x1 - x2) % p
     y3 = (s * (x1 - x3) - y1) % p
