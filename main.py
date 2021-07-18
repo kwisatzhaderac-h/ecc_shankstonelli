@@ -15,9 +15,12 @@ def generate_256_hex():
     return hex_number[2:] # returns string after 0x
 
 # check a point is on an elliptic curve
-def on_curve(x, y):
-    # secp256k1; y^2 = x^3 + 7
-    if (x ** 3 + 7 - y ** 2)  == 0:
+def on_Curve(pt, p):
+    """
+    Checks if x,y lies on the curve secp256k1; y^2 = x^3 + 7 (mod p)
+    """
+    x, y = pt
+    if (x ** 3 + 7 - y ** 2) % p == 0:
         return True
     else:
         return False
@@ -25,25 +28,42 @@ def on_curve(x, y):
 # %% 
 def add_Points(p1, p2, p):
     """
-    This is only for the elliptic curve y^2 = x^3 + 7
+    Point addition for curve secp256k1 y^2 = x^3 + 7 (mod p)
     """
-    x1, y1 = p1[0], p1[1]
-    x2, y2 = p2[0], p2[1]
+    x1, y1 = p1
+    x2, y2 = p2
     if p1 != p2:
-        s = ((y2 - y1) % p) * pow(((x2 - x1) % p), -1, p)
+        num = (y2 - y1) % p
+        den = (x2 - x1) % p
     else: # calculate tangent slope
-        s = (3 * (x1 ** 2) % p) * pow((2 * y1) % p, -1, p)
-        print(s)
+        num = 3 * (x1 ** 2) % p
+        den = (2 * y1) % p
+    # check for no solution
+    if den == 0:
+        return [None, None]
+    s = num * pow(den, -1, p)
     x3 = (s ** 2 - x1 - x2) % p
     y3 = (s * (x1 - x3) - y1) % p
     return [x3, y3]
 
-# TODO: Generator Point multiplication function
-"""
-args: G, k
-where G = Generator point (constant) and k = int (private key)
-Function will calculate P = k * G
-"""
+def multiply_Points(G, k, p):
+    """
+    args: G, k
+    where G = Generator point (constant) and k = int (private key)
+    Function will calculate P = G * k
+    for curve sep256k1 (mod p)
+    """
+    assert on_Curve(G[0], G[1], p) == True, "Point G does not lie on the curve."
+    if k == 1:
+        return G
+    if k == 0:
+        return 0
+    p1 = G
+    for i in range(2, k + 1):
+        p1 = add_Points(p1, G, p)
+    return p1
+
+
 
  # %%
 def legendre_symbol(a, p):
