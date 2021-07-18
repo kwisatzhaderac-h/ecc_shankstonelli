@@ -16,13 +16,11 @@ def on_Curve(pt, p):
     else:
         return False
 
-# TODO: bug, function thinkgs 87 is a prime number
 def is_Prime(p):
     for num in range(2, p):
         if p % num == 0:
             return False
-        else:
-            return True
+    return True
 
 def add_Points(p1, p2, p):
     """
