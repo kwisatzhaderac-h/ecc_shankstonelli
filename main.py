@@ -1,17 +1,10 @@
 # Steven Lam 
 # 2021
 # %%
-import random
 import matplotlib.pyplot as plt
 from matplotlib.pyplot import figure
 import numpy as np
 import sys
-
-def generate_256_hex():
-    # generate random 256-bit hexadecimal number
-    random_number = random.getrandbits(256) # generates random 256 bit number
-    hex_number = hex(random_number) # returns number as hex string
-    return hex_number[2:] # returns string after 0x
 
 # check a point is on an elliptic curve
 def on_Curve(pt, p):
@@ -23,6 +16,12 @@ def on_Curve(pt, p):
         return True
     else:
         return False
+
+def is_Prime(p):
+    for num in range(2,p):
+        if p % num == 0:
+            sys.exit("p is not a prime")
+
 
 def add_Points(p1, p2, p):
     """
@@ -65,7 +64,6 @@ def multiply_Points(G, k, p):
         p1 = add_Points(p1, G, p)
     return p1
 
- # %%
 def legendre_symbol(a, p):
     # euler criterion to compute legendre symbol 
     e = (p - 1) // 2
@@ -109,11 +107,6 @@ def solve_QuadraticCongruence(a, p):
             u = pow(q, k * pow(2, n - i - 1), p)
             t = (t * u) % p
             r = (r * u * u) % p
-
-def is_Prime(p):
-    for num in range(2,p):
-        if p % num == 0:
-            sys.exit("p is not a prime")
 
 ### Finding points on the secp256k1 curve
 def find_Points(p):
@@ -160,12 +153,6 @@ plt.contour(x.ravel(), y.ravel(), pow(x, 3) + a*x + b - pow(y ,2), [0])
 plt.grid()
 plt.show()
 
-# %% Multiply private key to generage public key
-### Generate private key
-priv_key = generate_256_hex()
-print(priv_key)
-
-# %%
 ## Resources
 # https://en.bitcoin.it/wiki/Secp256k1
 # https://cryptobook.nakov.com/asymmetric-key-ciphers/elliptic-curve-cryptography-ecc
