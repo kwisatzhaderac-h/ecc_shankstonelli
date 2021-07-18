@@ -7,7 +7,6 @@ from matplotlib.pyplot import figure
 import numpy as np
 import sys
 
-# %%
 def generate_256_hex():
     # generate random 256-bit hexadecimal number
     random_number = random.getrandbits(256) # generates random 256 bit number
@@ -25,7 +24,6 @@ def on_Curve(pt, p):
     else:
         return False
 
-# %% TODO: Addition to points on infinity
 def add_Points(p1, p2, p):
     """
     Point addition for curve secp256k1 y^2 = x^3 + 7 (mod p)
@@ -66,8 +64,6 @@ def multiply_Points(G, k, p):
     for i in range(2, k + 1):
         p1 = add_Points(p1, G, p)
     return p1
-
-
 
  # %%
 def legendre_symbol(a, p):
