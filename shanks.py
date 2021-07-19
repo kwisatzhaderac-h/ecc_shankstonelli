@@ -54,7 +54,7 @@ def multiply_Points(G, k, p):
     Function will calculate P = G * k
     for curve sep256k1 (mod p)
     """
-    assert on_Curve(G[0], G[1], p), "Point G does not lie on the curve."
+    assert on_Curve(G, p), "Point G does not lie on the curve."
     if k == 1:
         return G
     if k == 0:

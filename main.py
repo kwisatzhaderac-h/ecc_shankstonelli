@@ -6,11 +6,10 @@ from keygen import generate_256_hex
 
 # %% Executing functions
 # class SECP256k1 has two methods: find_Points() and show_Points()
-pt = SECP256K1(87)
-pt.find_Points()
+pt = SECP256K1(89)
 pt.plot_Points()
 # %%
 pK = int(generate_256_hex(), 16)
-multiply_Points()
+multiply_Points([1, 39], pK, 89)
 # %%
 # %%
