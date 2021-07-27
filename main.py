@@ -4,9 +4,6 @@
 from shanks import SECP256K1, is_Prime, multiply_Points
 from keygen import generate_256_hex
 
-import sys
-import matplotlib
-
 if __name__ == "__main__":
     # class SECP256k1 has two methods: find_Points() and show_Points()
     p = int(input("Please enter a prime number greater than 2: "))
